@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نصر والت | لوحة الإدارة والرقابة المركزية (Admin Portal)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #01140a;
+      --card-bg: #032516;
+      --gold: #f5c842;
+      --green: #16a34a;
+      --red: #ef4444;
+      --blue: #0ea5e9;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: rgba(245, 200, 66, 0.25);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 16px;
+    }
+    header {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #7f1d1d, #b91c1c);
+      border: 1.5px solid #ef4444;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+    }
+    .brand-title h1 {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--gold);
+    }
+    .brand-title p {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .webhook-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #01140a;
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 12px;
+      max-width: 480px;
+      width: 100%;
+    }
+    .webhook-box input {
+      background: transparent;
+      border: none;
+      color: var(--gold);
+      font-family: inherit;
+      width: 100%;
+      outline: none;
+      font-size: 11px;
+      direction: ltr;
+      text-align: left;
+    }
+    .btn {
+      background: var(--gold);
+      color: #000;
+      border: none;
+      font-weight: 800;
+      font-family: inherit;
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 11px;
+      transition: 0.2s;
+    }
+    .btn:hover { background: #e5b32e; }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .kpi-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      position: relative;
+    }
+    .kpi-card .label { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+    .kpi-card .value { font-size: 22px; font-weight: 900; margin-top: 4px; font-family: monospace; }
+    .table-container {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    .table-header {
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .table-header h3 { font-size: 14px; font-weight: 800; color: #fff; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      text-align: right;
+    }
+    th {
+      background: rgba(1, 20, 10, 0.6);
+      padding: 10px 14px;
+      color: var(--gold);
+      font-weight: 700;
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(245, 200, 66, 0.1);
+      color: #e2e8f0;
+    }
+    tr:hover { background: rgba(245, 200, 66, 0.04); }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .badge-success { background: rgba(22, 163, 74, 0.2); color: #4ade80; border: 1px solid rgba(22, 163, 74, 0.4); }
+    .badge-flagged { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
+    .badge-pending { background: rgba(245, 200, 66, 0.2); color: var(--gold); border: 1px solid rgba(245, 200, 66, 0.4); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <div class="brand-icon">🛡️</div>
+      <div class="brand-title">
+        <h1>نصر والت | لوحة الإدارة والرقابة اللحظية</h1>
+        <p>مراقبة تدفقات العمليات، الربط بـ Google Sheets، ومكافحة غسل الأموال</p>
+      </div>
+    </div>
+
+    <div class="webhook-box">
+      <span style="color:var(--text-muted); font-size:11px;">Webhook:</span>
+      <input type="text" id="webhookInput" placeholder="https://script.google.com/macros/s/.../exec" value="PASTE_YOUR_WEBAPP_URL_HERE">
+      <button class="btn" onclick="saveWebhook()">حفظ الرابط</button>
+      <button class="btn" style="background:#0ea5e9; color:#fff;" onclick="loadTransactions()">تحديث 🔄</button>
+    </div>
+  </header>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="label">إجمالي العمليات المنفذة</div>
+      <div class="value" style="color:var(--gold);" id="kpiTotalCount">24</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">حجم السيولة المدارة (ريال يمني)</div>
+      <div class="value" style="color:var(--green);" id="kpiTotalAmount">485,250,000</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">عمليات تحت الفحص والرقابة (AML)</div>
+      <div class="value" style="color:var(--red);" id="kpiFlagged">0</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">حالة الاتصال بـ Google Sheets</div>
+      <div class="value" style="color:var(--blue); font-size:16px;" id="kpiStatus">متصل ومستعد 🟢</div>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <div class="table-header">
+      <h3>📋 سجل العمليات اللحظي (مزامنة مباشرة مع Google Sheets وتطبيقات نصر والت)</h3>
+      <span style="font-size: 11px; color: var(--text-muted);" id="lastUpdated">آخر فحص: الآن</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>المعرف</th>
+          <th>التاريخ والوقت</th>
+          <th>نوع الخدمة</th>
+          <th>المرسل / الحساب</th>
+          <th>المستفيد / الوجهة</th>
+          <th>المبلغ</th>
+          <th>الحالة</th>
+          <th>المرجع</th>
+          <th>الإجراءات</th>
+        </tr>
+      </thead>
+      <tbody id="txTableBody">
+        <tr>
+          <td style="font-family:monospace; color:var(--gold);">TX-2026-901</td>
+          <td>2026-10-09 15:42</td>
+          <td>تسديد يمن موبايل</td>
+          <td>الرئيسي (نصر محمد)</td>
+          <td>777123456</td>
+          <td style="font-weight:bold; color:var(--gold);">5,000 ر.ي</td>
+          <td><span class="badge badge-success">ناجحة وموثقة</span></td>
+          <td style="font-family:monospace;">REF-884102</td>
+          <td><button class="btn" style="padding:3px 8px; font-size:10px;">تفاصيل</button></td>
+        </tr>
+        <tr>
+          <td style="font-family:monospace; color:var(--gold);">TX-2026-902</td>
+          <td>2026-10-09 15:30</td>
+          <td>حوالة فورية</td>
+          <td>الرئيسي (نصر محمد)</td>
+          <td>سالم علي قاسم</td>
+          <td style="font-weight:bold; color:var(--green);">25,000 ر.ي</td>
+          <td><span class="badge badge-success">ناجحة وموثقة</span></td>
+          <td style="font-family:monospace;">REF-884103</td>
+          <td><button class="btn" style="padding:3px 8px; font-size:10px;">تفاصيل</button></td>
+        </tr>
+        <tr>
+          <td style="font-family:monospace; color:var(--gold);">TX-2026-903</td>
+          <td>2026-10-09 14:15</td>
+          <td>طلب مصروف عائلي</td>
+          <td>حساب الطفل (أحمد نصر)</td>
+          <td>المحفظة الرئيسية</td>
+          <td style="font-weight:bold; color:var(--gold);">2,000 ر.ي</td>
+          <td><span class="badge badge-pending">معتمد من الوالد</span></td>
+          <td style="font-family:monospace;">REF-884104</td>
+          <td><button class="btn" style="padding:3px 8px; font-size:10px;">تفاصيل</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    function saveWebhook() {
+      const url = document.getElementById('webhookInput').value;
+      localStorage.setItem('NASR_ADMIN_WEBHOOK', url);
+      alert('تم حفظ رابط الويب هوك بنجاح!');
+    }
+
+    window.addEventListener('load', () => {
+      const saved = localStorage.getItem('NASR_ADMIN_WEBHOOK');
+      if (saved) {
+        document.getElementById('webhookInput').value = saved;
+      }
+    });
+
+    async function loadTransactions() {
+      const url = document.getElementById('webhookInput').value;
+      if (!url || url.includes('PASTE_YOUR_WEBAPP_URL_HERE')) {
+        alert('يرجى لصق رابط Google Apps Script أولاً للتحديث الحي، جاري عرض السجل المحلي المسجل.');
+        return;
+      }
+
+      try {
+        document.getElementById('kpiStatus').innerText = 'جاري الجلب... ⏳';
+        const res = await fetch(url + '?action=get_transactions');
+        const json = await res.json();
+        if (json.status === 'success' && json.data) {
+          renderTable(json.data);
+          document.getElementById('kpiStatus').innerText = 'متصل ومحدث 🟢';
+          document.getElementById('lastUpdated').innerText = 'آخر فحص: ' + new Date().toLocaleTimeString('ar-YE');
+        }
+      } catch (err) {
+        document.getElementById('kpiStatus').innerText = 'تعذر الاتصال بالرابط ⚠️';
+      }
+    }
+
+    function renderTable(rows) {
+      const tbody = document.getElementById('txTableBody');
+      if (!rows.length) return;
+      tbody.innerHTML = '';
+      rows.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="font-family:monospace; color:var(--gold);">${r['المعرف'] || 'TX-NEW'}</td>
+          <td>${r['التاريخ والوقت'] || '-'}</td>
+          <td>${r['نوع العملية'] || '-'}</td>
+          <td>${r['المرسل / الحساب'] || '-'}</td>
+          <td>${r['المستفيد / الجهة'] || '-'}</td>
+          <td style="font-weight:bold; color:var(--gold);">${Number(r['المبلغ']||0).toLocaleString()} ${r['العملة']||'ر.ي'}</td>
+          <td><span class="badge badge-success">${r['الحالة'] || 'مكتملة'}</span></td>
+          <td style="font-family:monospace;">${r['رقم المرجع'] || '-'}</td>
+          <td><button class="btn" style="padding:3px 8px; font-size:10px;">تفاصيل</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+      document.getElementById('kpiTotalCount').innerText = rows.length;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+{
+  "name": "نصر والت | Nasr Wallet Sovereign",
+  "description": "المحفظة الإلكترونية الرسمية للبريد اليمني — تسديد الاتصالات، التحويل الفوري، سداد الفواتير الحكومية، ومنظومة سيادية مركزية متكاملة.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

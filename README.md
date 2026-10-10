@@ -1,11 +1,44 @@
-<div align="center">
+# 🏛️ NASR WALLET Ω — نظام المحفظة السيادية
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+**المحفظة الإلكترونية الرسمية للبريد اليمني**
 
-  <h1>Built with AI Studio</h2>
+منظومة مالية سيادية متكاملة — React 19 + TypeScript + Vite + Tailwind 4
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+## 📋 المتطلبات
+- Node.js 20+
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+## 🚀 التشغيل المحلي
+```bash
+npm install
+npm run dev
+```
 
-</div>
+افتح: http://localhost:3000
+
+🏗️ البناء للإنتاج
+
+```bash
+npm run build
+```
+
+📱 المعاينة
+
+```bash
+npm run preview
+```
+
+🎯 الميزات
+
+· 🔐 18 مكوّن سيادي
+· 📊 لوحة تحكم مركزية
+· 💰 دعم YER/USD/SAR
+· 🏦 تكامل بنكي
+· 📡 مزودي اتصالات
+· 👨‍👩‍👧‍👦 منظومة الأسرة
+· 🌳 مخطط شجري
+· 🤖 مساعد ذكي + CLI
+· 📱 PWA كامل
+
+📄 الترخيص
+
+سيادي داخلي — © 2026
